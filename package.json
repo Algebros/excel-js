@@ -1,0 +1,30 @@
+{
+  "name": "simple-excel",
+  "version": "1.0.0",
+  "description": "Pure JS Excel application",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Algebros/excel-js.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "excel"
+  ],
+  "author": "Algebros",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Algebros/excel-js/issues"
+  },
+  "homepage": "https://github.com/Algebros/excel-js#readme",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
