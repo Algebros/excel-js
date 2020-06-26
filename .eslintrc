@@ -6,7 +6,7 @@
         "node": true
     },
     "rules": {
-
+      "require-jsdoc": 0
     },
     "extends": ["eslint:recommended", "google"]
 }
