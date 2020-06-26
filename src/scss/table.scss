@@ -18,6 +18,7 @@
 
     .row-info {
         display: flex;
+        position: relative;
         justify-content: center;
         align-items: center;
         min-width: $info-cell-width;
@@ -25,6 +26,10 @@
         border: 1px solid $border-color;
         background-color: $cell-bgcolor;
         border-top: none;
+
+        .row-resize {
+            @include resize(row, 4px, $primary-color)
+        }
     }
     
     .row-data {
@@ -33,6 +38,7 @@
 
     .column {
         display: flex;
+        position: relative;
         justify-content: center;
         align-items: center;
         background-color: $cell-bgcolor;
@@ -42,6 +48,10 @@
         border-top: none;
         border-left: none;
         height: 100%;
+
+        .col-resize {
+            @include resize(col, 4px, $primary-color)
+        }
     }
 
     .cell {
@@ -58,7 +68,7 @@
 
         &.selected {
             border: none;
-            outline: 2px solid #3c74ff;
+            outline: 2px solid $primary-color;
             z-index: 2;
         }
     }

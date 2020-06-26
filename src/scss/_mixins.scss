@@ -26,3 +26,26 @@
   margin: 0;
   padding: 0;
 }
+
+@mixin resize($direction, $size, $color) {
+    @if $direction == col {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: $size;
+    } @else if $direction == row {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: $size;
+    }
+
+    position: absolute;
+    opacity: 0;
+    background-color: $color;
+
+    &:hover {
+        opacity: 1;
+        cursor: col-resize;
+    }
+}
