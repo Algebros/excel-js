@@ -33,11 +33,19 @@
         bottom: 0;
         right: 0;
         width: $size;
+
+        &:hover {
+            cursor: col-resize;
+        }
     } @else if $direction == row {
         left: 0;
         right: 0;
         bottom: 0;
         height: $size;
+
+        &:hover {
+            cursor: row-resize;
+        }
     }
 
     position: absolute;
@@ -45,7 +53,6 @@
     background-color: $color;
 
     &:hover {
-        opacity: 1;
-        cursor: col-resize;
+        opacity: 1!important;
     }
 }

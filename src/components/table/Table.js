@@ -22,6 +22,7 @@ export class Table extends ExcelComponent {
       const $parent = $resizer.closest('[data-type="resizable"]');
       const coords = $parent.getCoords();
       const cells = this.$root.findAll(`[data-col="${$parent.data.col}"]`);
+      $resizer.css({opacity: 1});
 
       document.onmousemove = (e) => {
         if (type === 'col') {
@@ -38,6 +39,9 @@ export class Table extends ExcelComponent {
 
       document.onmouseup = () => {
         document.onmousemove = null;
+        $resizer.css({opacity: 0});
+
+        document.onmouseup = null;
       };
     }
   }
