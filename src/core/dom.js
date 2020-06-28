@@ -58,6 +58,14 @@ class Dom {
     });
   }
 
+  addClass(className) {
+    this.$el.classList.add(className);
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className);
+  }
+
   get data() {
     return this.$el.dataset;
   }
