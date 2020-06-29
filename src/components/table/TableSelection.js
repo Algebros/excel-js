@@ -3,19 +3,20 @@ export class TableSelection {
 
   constructor() {
     this.group = [];
+    this.current = null;
   }
 
   // $el instanceof Dom === true
   select($el) {
     this.clear();
+    this.current = $el;
     this.group.push($el);
-    $el.addClass(TableSelection.className);
+    $el.focus().addClass(TableSelection.className);
   }
 
   selectGroup($elements = []) {
     this.clear();
     this.group.push(...$elements);
-    this.group.map((el) => console.log(el.$el));
     $elements.map(($el) => $el.addClass(TableSelection.className));
   }
 

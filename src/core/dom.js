@@ -51,6 +51,11 @@ class Dom {
     return this.data.id;
   }
 
+  focus() {
+    this.$el.focus();
+    return this;
+  }
+
   find(selector) {
     return $(this.$el.querySelector(selector));
   }
