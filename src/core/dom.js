@@ -44,6 +44,13 @@ class Dom {
     return this.$el.getBoundingClientRect();
   }
 
+  id(parse) {
+    if (parse) {
+      return this.id().split(':').map((el) => Number.parseInt(el));
+    }
+    return this.data.id;
+  }
+
   find(selector) {
     return $(this.$el.querySelector(selector));
   }

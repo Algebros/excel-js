@@ -3,6 +3,7 @@ import {ExcelComponent} from '../../core/ExcelComponent';
 import {createTable} from './table.template';
 import {resizeHandler} from './table.resize';
 import {TableSelection} from './TableSelection';
+import {getGroupSelection} from './utils';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -33,6 +34,22 @@ export class Table extends ExcelComponent {
     } else if (event.target.dataset.type === 'cell') {
       const $target = $(event.target);
       this.selection.select($target);
+      let mouseoverTarget;
+
+      this.$root.$el.onmouseover = (event) => {
+        if (!event.target.dataset.id) return;
+        mouseoverTarget = $(event.target);
+      };
+
+      this.$root.$el.onmouseup = () => {
+        if (mouseoverTarget) {
+          const $cells = getGroupSelection($target, mouseoverTarget);
+          this.selection.selectGroup($cells);
+        }
+
+        this.$root.$el.onmouseover = null;
+        this.$root.$el.onmouseup = null;
+      };
     }
   }
 }

@@ -1,4 +1,5 @@
 import {DomListener} from './DomListener';
+import {TableSelection} from '../components/table/TableSelection';
 
 export class ExcelComponent extends DomListener {
   constructor($root, options = {}) {
@@ -8,7 +9,7 @@ export class ExcelComponent extends DomListener {
   }
 
   prepare() {
-
+    this.selection = new TableSelection();
   }
 
   toHTML() {
