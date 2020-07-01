@@ -25,8 +25,8 @@ function toColumn(letter, index) {
 }
 
 function createRow(content, index) {
-  // eslint-disable-next-line max-len
-  const resize = index ? '<div class="row-resize" data-resize="row"></div>' : '';
+  const resize = index ?
+  '<div class="row-resize" data-resize="row"></div>' : '';
   return `
    <div class="row" data-type="resizable">
     <div class="row-info">

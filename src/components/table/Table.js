@@ -8,9 +8,11 @@ import {getGroupSelection, nextSelector} from './utils';
 export class Table extends ExcelComponent {
   static className = 'excel__table';
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
-      listeners: ['mousedown', 'keydown'],
+      name: 'Table',
+      listeners: ['mousedown', 'keydown', 'input'],
+      ...options,
     });
   }
 
@@ -24,8 +26,18 @@ export class Table extends ExcelComponent {
 
   init() {
     super.init();
-    const $cell = this.$root.find('[data-id="0:0"]');
+    this.selectCell(this.$root.find('[data-id="0:0"]'));
+    this.$on('Formula:input', (data) => this.selection.current.text(data));
+    this.$on('Formula:pressButton', (key) => this.onFormula(key));
+  }
+
+  selectCell($cell) {
     this.selection.select($cell);
+    this.$emit('Table:input', $cell);
+  }
+
+  onFormula(key) {
+    this.selection.current.focus();
   }
 
   onMousedown(event) {
@@ -69,7 +81,11 @@ export class Table extends ExcelComponent {
       event.preventDefault();
       const id = this.selection.current.id(true);
       const $next = this.$root.find(nextSelector(key, id));
-      this.selection.select($next);
+      this.selectCell($next);
     }
+  }
+
+  onInput(event) {
+    this.$emit('Table:input', $(event.target));
   }
 }

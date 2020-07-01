@@ -6,7 +6,6 @@ export class TableSelection {
     this.current = null;
   }
 
-  // $el instanceof Dom === true
   select($el) {
     this.clear();
     this.current = $el;

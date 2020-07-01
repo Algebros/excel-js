@@ -3,6 +3,13 @@ const {ExcelComponent} = require('../../core/ExcelComponent');
 export class Toolbar extends ExcelComponent {
   static className = 'excel__toolbar';
 
+  constructor($root, options) {
+    super($root, {
+      name: 'Toobar',
+      ...options,
+    });
+  }
+
   toHTML() {
     return `
     <div class="button">
