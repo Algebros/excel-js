@@ -45,7 +45,7 @@ export class Table extends ExcelComponent {
       resizeHandler(this.$root, event);
     } else if (event.target.dataset.type === 'cell') {
       const $target = $(event.target);
-      this.selection.select($target);
+      this.selectCell($target);
       let mouseoverTarget;
 
       this.$root.$el.onmouseover = (event) => {
