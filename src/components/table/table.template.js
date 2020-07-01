@@ -3,10 +3,18 @@ const CODES = {
   Z: 90,
 };
 
-function toCell(_, index) {
-  return `
-    <div class="cell" contenteditable data-col="${index}"></div>
-  `;
+function toCell(row) {
+  return function(_, col) {
+    return `
+      <div
+        class="cell"
+        contenteditable
+        data-col="${col}"
+        data-type="cell"
+        data-id="${row}:${col}"
+      ></div>
+     `;
+  };
 }
 
 function toColumn(letter, index) {
@@ -17,8 +25,8 @@ function toColumn(letter, index) {
 }
 
 function createRow(content, index) {
-  // eslint-disable-next-line max-len
-  const resize = index ? '<div class="row-resize" data-resize="row"></div>' : '';
+  const resize = index ?
+  '<div class="row-resize" data-resize="row"></div>' : '';
   return `
    <div class="row" data-type="resizable">
     <div class="row-info">
@@ -46,12 +54,12 @@ export function createTable(rowsAmount = 15) {
 
   rows.push(createRow(cols));
 
-  for (let i = 0; i < rowsAmount; i++) {
+  for (let row = 0; row < rowsAmount; row++) {
     const cells = new Array(colsAmount)
         .fill('')
-        .map(toCell)
+        .map(toCell(row))
         .join('');
-    rows.push(createRow(cells, i + 1));
+    rows.push(createRow(cells, row + 1));
   }
 
   return rows.join('');
