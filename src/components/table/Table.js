@@ -4,6 +4,7 @@ import {createTable} from './table.template';
 import {resizeHandler} from './table.resize';
 import {TableSelection} from './TableSelection';
 import {getGroupSelection, nextSelector} from './utils';
+import * as actions from '../../redux/actions';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -17,7 +18,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable();
+    return createTable(20, this.store.getState());
   }
 
   prepare() {
@@ -27,22 +28,34 @@ export class Table extends ExcelComponent {
   init() {
     super.init();
     this.selectCell(this.$root.find('[data-id="0:0"]'));
-    this.$on('Formula:input', (data) => this.selection.current.text(data));
+    this.$on('Formula:input', (text) => {
+      this.selection.current.text(text);
+      this.updateTextInStore(text);
+    });
     this.$on('Formula:pressButton', (key) => this.onFormula(key));
   }
 
   selectCell($cell) {
     this.selection.select($cell);
-    this.$emit('Table:input', $cell);
+    this.$emit('Table:select', $cell);
   }
 
   onFormula(key) {
     this.selection.current.focus();
   }
 
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event);
+      this.$dispath(actions.tableResize(data));
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
   onMousedown(event) {
     if (event.target.dataset.resize) {
-      resizeHandler(this.$root, event);
+      this.resizeTable(event);
     } else if (event.target.dataset.type === 'cell') {
       const $target = $(event.target);
       this.selectCell($target);
@@ -85,7 +98,15 @@ export class Table extends ExcelComponent {
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispath(actions.changeText({
+      id: this.selection.current.id(),
+      value,
+    }));
+  }
+
   onInput(event) {
-    this.$emit('Table:input', $(event.target));
+    // this.$emit('Table:input', $(event.target));
+    this.updateTextInStore($(event.target).text());
   }
 }
