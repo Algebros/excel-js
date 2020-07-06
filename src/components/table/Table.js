@@ -5,6 +5,7 @@ import {resizeHandler} from './table.resize';
 import {TableSelection} from './TableSelection';
 import {getGroupSelection, nextSelector} from './utils';
 import * as actions from '../../redux/actions';
+import {defaultStyles} from '../../constants';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -33,11 +34,13 @@ export class Table extends ExcelComponent {
       this.updateTextInStore(text);
     });
     this.$on('Formula:pressButton', (key) => this.onFormula(key));
+    this.$on('toolbar:applyStyle', (style) => this.selection.applyStyle(style));
   }
 
   selectCell($cell) {
     this.selection.select($cell);
     this.$emit('Table:select', $cell);
+    $cell.getStyles(Object.keys(defaultStyles));
   }
 
   onFormula(key) {
