@@ -40,7 +40,8 @@ export class Table extends ExcelComponent {
   selectCell($cell) {
     this.selection.select($cell);
     this.$emit('Table:select', $cell);
-    $cell.getStyles(Object.keys(defaultStyles));
+    const styles =$cell.getStyles(Object.keys(defaultStyles));
+    this.$dispath(actions.changeStyles(styles));
   }
 
   onFormula(key) {
