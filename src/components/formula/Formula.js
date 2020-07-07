@@ -26,7 +26,7 @@ export class Formula extends ExcelComponent {
     this.$formula = this.$root.find('#formula');
 
     this.$on('Table:select', ($cell) => {
-      this.$formula.text($cell.text());
+      this.$formula.text($cell.data.value);
     });
   }
 
@@ -49,7 +49,6 @@ export class Formula extends ExcelComponent {
   }
 
   storeChanged({currentText}) {
-    console.log(currentText);
     this.$formula.text(currentText);
   }
 }
