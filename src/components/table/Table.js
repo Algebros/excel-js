@@ -34,7 +34,13 @@ export class Table extends ExcelComponent {
       this.updateTextInStore(text);
     });
     this.$on('Formula:pressButton', (key) => this.onFormula(key));
-    this.$on('toolbar:applyStyle', (style) => this.selection.applyStyle(style));
+    this.$on('toolbar:applyStyle', (value) => {
+      this.selection.applyStyle(value);
+      this.$dispath(actions.applyStyle({
+        value,
+        ids: this.selection.selectedIds,
+      }));
+    });
   }
 
   selectCell($cell) {
