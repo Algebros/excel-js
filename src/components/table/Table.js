@@ -4,6 +4,9 @@ import {createTable} from './table.template';
 import {resizeHandler} from './table.resize';
 import {TableSelection} from './TableSelection';
 import {getGroupSelection, nextSelector} from './utils';
+import * as actions from '../../redux/actions';
+import {defaultStyles} from '../../constants';
+import {parse} from '../../core/parse';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -17,7 +20,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable();
+    return createTable(20, this.store.getState());
   }
 
   prepare() {
@@ -27,22 +30,45 @@ export class Table extends ExcelComponent {
   init() {
     super.init();
     this.selectCell(this.$root.find('[data-id="0:0"]'));
-    this.$on('Formula:input', (data) => this.selection.current.text(data));
+    this.$on('Formula:input', (value) => {
+      this.selection.current
+          .attr('data-value', value)
+          .text(parse(value));
+      this.updateTextInStore(value);
+    });
     this.$on('Formula:pressButton', (key) => this.onFormula(key));
+    this.$on('toolbar:applyStyle', (value) => {
+      this.selection.applyStyle(value);
+      this.$dispath(actions.applyStyle({
+        value,
+        ids: this.selection.selectedIds,
+      }));
+    });
   }
 
   selectCell($cell) {
     this.selection.select($cell);
-    this.$emit('Table:input', $cell);
+    this.$emit('Table:select', $cell);
+    const styles =$cell.getStyles(Object.keys(defaultStyles));
+    this.$dispath(actions.changeStyles(styles));
   }
 
   onFormula(key) {
     this.selection.current.focus();
   }
 
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event);
+      this.$dispath(actions.tableResize(data));
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
   onMousedown(event) {
     if (event.target.dataset.resize) {
-      resizeHandler(this.$root, event);
+      this.resizeTable(event);
     } else if (event.target.dataset.type === 'cell') {
       const $target = $(event.target);
       this.selectCell($target);
@@ -85,7 +111,15 @@ export class Table extends ExcelComponent {
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispath(actions.changeText({
+      id: this.selection.current.id(),
+      value,
+    }));
+  }
+
   onInput(event) {
-    this.$emit('Table:input', $(event.target));
+    // this.$emit('Table:input', $(event.target));
+    this.updateTextInStore($(event.target).text());
   }
 }
