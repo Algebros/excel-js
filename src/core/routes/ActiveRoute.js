@@ -4,6 +4,10 @@ export class ActiveRoute {
   }
 
   static get param() {
-    return this.path.split('/');
+    return this.path.split('/')[1];
+  }
+
+  static navigate(path) {
+    window.location.hash = path;
   }
 }
